@@ -1,0 +1,17 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  overflow: hidden; /* Optional: Prevent scrolling */
+}
+
+canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block; /* Remove any default inline styling */
+  border: none;
+}
