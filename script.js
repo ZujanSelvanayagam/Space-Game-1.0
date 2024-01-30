@@ -3,9 +3,17 @@ var ships = [];
 var MARGIN = 40;
 var SHIP_NORMAL = 'normal';
 var SHIP_THRUST = 'thrust';
+var asteroids;
+var asteroidImages = [];
+
 
 function preload() {
   shipImage = loadImage('assets/asteroids_ship0001.png');
+
+  for (var i = 0; i < 3; i++) {
+    var asteroidImage = loadImage('assets/asteroid' + i + '.png');
+    asteroidImages.push(asteroidImage);
+  }
 }
 
 function setup() {
@@ -21,6 +29,15 @@ function setup() {
     newShip.addImage(SHIP_NORMAL, shipImage);
     newShip.addAnimation(SHIP_THRUST, 'assets/asteroids_ship0002.png', 'assets/asteroids_ship0007.png');
     ships.push(newShip);
+  }
+
+  asteroids = new Group();
+
+  for (var i = 0; i < 8; i++) {
+    var angle = random(360);
+    var x = width / 2 + 1000 * cos(radians(angle));
+    var y = height / 2 + 1000 * sin(radians(angle));
+    createAsteroid(3, x, y);
   }
 }
 
@@ -85,4 +102,26 @@ function drawUi() {
   }
 
   drawSprites();
+}
+
+
+function createAsteroid(type, x, y) {
+  var asteroid = createSprite(x, y);
+  var image = asteroidImages[floor(random(0, 3))];
+  asteroid.addImage(image);
+  asteroid.setSpeed(2.5 - type / 2, random(360));
+  asteroid.rotationSpeed = 0.5;
+  asteroid.type = type;
+
+  if (type === 2) {
+    asteroid.scale = 0.6;
+  }
+  if (type === 1) {
+    asteroid.scale = 0.3;
+  }
+
+  asteroid.mass = 2 + asteroid.scale;
+  asteroid.setCollider('circle', 0, 0, 50);
+  asteroids.add(asteroid);
+  return asteroid;
 }
