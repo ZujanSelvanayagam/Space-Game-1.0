@@ -97,7 +97,7 @@ function drawUi() {
     currentShip.changeAnimation(SHIP_NORMAL);
   }
 
-  if (!currentShip.removed && keyWentDown('x') && i === 0) {
+  if (!currentShip.removed && keyWentDown('Enter') && i === 0) {
     var bullet = createSprite(currentShip.position.x, currentShip.position.y);
     bullet.debug = false;
     bullet.addImage(bulletImage);
