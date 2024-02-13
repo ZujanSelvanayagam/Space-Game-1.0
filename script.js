@@ -150,8 +150,8 @@ function drawUi() {
     }
   drawSprites();
 
+  ]
   }
-}
 
 
 function createAsteroid(type, x, y) {
