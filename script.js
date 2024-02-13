@@ -7,7 +7,6 @@ var asteroids;
 var bullets = [];
 var bulletImage;
 var particleImage;
-
 var asteroidImages = [];
 
 
@@ -75,6 +74,19 @@ function drawUi() {
     }
   }
 
+  for (var i = 0; i < asteroids.length; i++) {
+    for (var j = 0; j < ships.length; j++) {
+      if (asteroids[i].overlap(ships[j])) {
+        asteroidHit(asteroids[i], ships[j]);
+      }
+    }
+  }
+
+  for (var i = 0; i < asteroids.length; i++) {
+    for (var j = 0; j < bullets.length; j++) {
+      bullets[j].overlap(asteroids[i], hitAsteroid);
+    }
+  }
 
   for (var i = 0; i < ships.length; i++) {
   shipHit(ships[i], bullets[(i + 1) % ships.length]);
@@ -128,13 +140,19 @@ function drawUi() {
       bullet2.setSpeed(10 + currentShip.getSpeed(), currentShip.rotation);
       bullet2.life = 100;
       bullets[1].add(bullet2);
+     currentShip.bulletFired = true;
+      }
+      }
+
+      if (!keyDown('Space')) {
+        currentShip.bulletFired = false;
+      }
     }
-  }
-  
   drawSprites();
+
+  }
 }
-}
-}
+
 
 function createAsteroid(type, x, y) {
   var asteroid = createSprite(x, y);
@@ -162,5 +180,24 @@ function shipHit(ship, bulletGroup) {
     if (bulletGroup[i].overlap(ship)) {
       bulletGroup[i].remove();
     }
+  }
+}
+
+function hitAsteroid(bullet, asteroid) {
+  bullet.remove();
+  asteroid.remove();
+  asteroid.type--;
+
+  if (asteroid.type >= 1) {
+    createAsteroid(asteroid.type, asteroid.position.x + 20, asteroid.position.y + 20);
+    createAsteroid(asteroid.type, asteroid.position.x - 20, asteroid.position.y - 20);
+  }
+
+  for (var i = 0; i < 10; i++) {
+    var particle = createSprite(asteroid.position.x, asteroid.position.y);
+    particle.addImage(particleImage);
+    particle.setSpeed(random(3, 5), random(360));
+    particle.friction = 0.01;
+    particle.life = 15;
   }
 }
