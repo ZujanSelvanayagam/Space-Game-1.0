@@ -149,8 +149,7 @@ function drawUi() {
       }
     }
   drawSprites();
-
-  ]
+  }
   }
 
 
