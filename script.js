@@ -10,13 +10,17 @@ var particleImage;
 var asteroidImages = [];
 var gameState = 0;
 
-
+var myFont;
+var myFont1;
 
 function preload() {
   shipImage = loadImage('assets/asteroids_ship0001.png');
   bulletImage = loadImage('assets/asteroids_bullet.png');
   particleImage = loadImage('assets/asteroids_particle.png');
 
+  myFont = loadFont('fonts/brokenmachine.ttf');
+  myFont1 = loadFont('fonts/future-now-regular.ttf');
+  
   for (var i = 0; i < 3; i++) {
     var asteroidImage = loadImage('assets/asteroid' + i + '.png');
     asteroidImages.push(asteroidImage);
@@ -67,18 +71,25 @@ function menu() {
   background(0);
   fill(4, 44, 220);
   textSize(70);
+  textFont(myFont);
   text('Space Games', width / 3, height / 4);
 
   fill(255, 255, 255);
   textSize(35);
   textAlign(LEFT);
-
+  textFont(myFont1);
   text('Player 1 Name: ', width / 2, height / 2 - 50);
   text('Player 2 Name: ', width / 2, height / 2);
 
   textSize(30);
   text('Press 1 for Space Race', width / 3, height / 2 + 50);
 
+  fill(4, 44, 220);
+  textAlign(CENTER);
+  textSize(20);
+  textFont(myFont);
+  text('CONTROLS: WASD + Spacebar', 1000, 550);
+  text('CONTROLS: ArrowKeys + Enter', 1000, 580);
 }
 
 
