@@ -18,8 +18,8 @@ function preload() {
   bulletImage = loadImage('assets/asteroids_bullet.png');
   particleImage = loadImage('assets/asteroids_particle.png');
 
-  myFont = loadFont('fonts/brokenmachine.ttf');
-  myFont1 = loadFont('fonts/future-now-regular.ttf');
+  myFont = loadFont('fonts/BrokenMachine.ttf');
+  myFont1 = loadFont('fonts/FutureNowRegular.ttf');
   
   for (var i = 0; i < 3; i++) {
     var asteroidImage = loadImage('assets/asteroid' + i + '.png');
