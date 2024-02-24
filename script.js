@@ -90,7 +90,7 @@ function drawUi() {
 
   for (var i = 0; i < ships.length; i++) {
   shipHit(ships[i], bullets[(i + 1) % ships.length]);
-  
+  }
 
   for (var i = 0; i < ships.length; i++) {
   var currentShip = ships[i];
@@ -150,7 +150,7 @@ function drawUi() {
     }
   drawSprites();
   }
-  }
+  
 
 
 function createAsteroid(type, x, y) {
@@ -199,4 +199,9 @@ function hitAsteroid(bullet, asteroid) {
     particle.friction = 0.01;
     particle.life = 15;
   }
+}
+
+function asteroidHit(asteroid, ship) {
+  ship.position.x = width / 2;
+  ship.position.y = height / 2;
 }
