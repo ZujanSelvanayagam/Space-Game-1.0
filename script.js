@@ -8,6 +8,8 @@ var bullets = [];
 var bulletImage;
 var particleImage;
 var asteroidImages = [];
+var gameState = 0;
+
 
 
 function preload() {
@@ -53,6 +55,11 @@ function setup() {
 }
 
 function draw() {
+  if (gameState == 0) {
+    menu();
+  } else if (gameState == 1) {
+    SpaceGame();
+  }
   background(0);
   drawUi();
 }
@@ -204,4 +211,11 @@ function hitAsteroid(bullet, asteroid) {
 function asteroidHit(asteroid, ship) {
   ship.position.x = width / 2;
   ship.position.y = height / 2;
+}
+
+function keyPressed() {
+  if (keyCode == 49) { // Toets 1
+    if (gameState == 0){
+    }
+  }
 }
