@@ -60,9 +60,27 @@ function draw() {
   } else if (gameState == 1) {
     SpaceGame();
   }
-  background(0);
-  drawUi();
+
 }
+
+function menu() {
+  background(0);
+  fill(4, 44, 220);
+  textSize(70);
+  text('Space Games', width / 3, height / 4);
+
+  fill(255, 255, 255);
+  textSize(35);
+  textAlign(LEFT);
+
+  text('Player 1 Name: ', width / 2, height / 2 - 50);
+  text('Player 2 Name: ', width / 2, height / 2);
+
+  textSize(30);
+  text('Press 1 for Space Race', width / 3, height / 2 + 50);
+
+}
+
 
 function drawUi() {
   for (var i = 0; i < allSprites.length; i++) {
@@ -157,8 +175,11 @@ function drawUi() {
     }
   drawSprites();
   }
-  
 
+function SpaceGame() {
+background(0);
+drawUi();
+}
 
 function createAsteroid(type, x, y) {
   var asteroid = createSprite(x, y);
@@ -216,6 +237,7 @@ function asteroidHit(asteroid, ship) {
 function keyPressed() {
   if (keyCode == 49) { // Toets 1
     if (gameState == 0){
+    gameState = 1;
     }
   }
 }
