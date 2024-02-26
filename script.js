@@ -9,6 +9,8 @@ var bulletImage;
 var particleImage;
 var asteroidImages = [];
 var gameState = 0;
+var timer = 100;
+
 
 var myFont;
 var myFont1;
@@ -23,7 +25,7 @@ function preload() {
   myFont = loadFont('fonts/BrokenMachine.ttf');
   myFont1 = loadFont('fonts/FutureNowRegular.ttf');
 
-  music = loadSound('fortnitecoral.mp3');
+  // music = loadSound('fortnitecoral.mp3');
   
   for (var i = 0; i < 3; i++) {
     var asteroidImage = loadImage('assets/asteroid' + i + '.png');
@@ -34,7 +36,7 @@ function preload() {
 function setup() {
   createCanvas(1200, 725);
 
-  music.play();
+  // music.play();
   
   ships = [];
   bullets = [];
@@ -96,8 +98,7 @@ function menu() {
   textFont(myFont);
   text('CONTROLS: WASD + Spacebar', 1000, 550);
   text('CONTROLS: ArrowKeys + Enter', 1000, 580);
-}
-
+  }
 
 function drawUi() {
   for (var i = 0; i < allSprites.length; i++) {
@@ -191,11 +192,22 @@ function drawUi() {
       }
     }
   drawSprites();
+
+  fill(255, 255, 255);
+  textAlign(CENTER);
+  textSize(20);
+  textAlign(CENTER);
+  text('TIME: ' + timer + ' s', width / 2, 100);
+
+  if (frameCount % 60 == 0) {
+    timer -= 1;
+  }
   }
 
 function SpaceGame() {
 background(0);
 drawUi();
+
 }
 
 function createAsteroid(type, x, y) {
