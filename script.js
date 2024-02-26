@@ -8,8 +8,16 @@ var bullets = [];
 var bulletImage;
 var particleImage;
 var asteroidImages = [];
+var bulletImage;
+var bullets = [];
 var gameState = 0;
 var timer = 100;
+
+
+let player1Name = "";
+let player2Name = "";
+var typingPlayer1Name = false;
+var typingPlayer2Name = false;
 
 
 var myFont;
@@ -37,6 +45,28 @@ function setup() {
   createCanvas(1200, 725);
 
   // music.play();
+
+
+  // Laad opgeslagen namen uit de localstorage als deze bestaan
+  if (localStorage.getItem('player1Name')) {
+    player1Name = localStorage.getItem('player1Name');
+  }
+  if (localStorage.getItem('player2Name')) {
+    player2Name = localStorage.getItem('player2Name');
+  }
+
+  document.getElementById("player1Name").addEventListener("input", function(event) {
+    player1Name = event.target.value;
+    // Sla de ingevoerde naam op in de localstorage
+    localStorage.setItem('player1Name', player1Name);
+  });
+
+  document.getElementById("player2Name").addEventListener("input", function(event) {
+    player2Name = event.target.value;
+    // Sla de ingevoerde naam op in de localstorage
+    localStorage.setItem('player2Name', player2Name);
+  });
+
   
   ships = [];
   bullets = [];
@@ -89,10 +119,24 @@ function menu() {
   text('Player 1 Name: ', width / 2, height / 2 - 50);
   text('Player 2 Name: ', width / 2, height / 2);
 
+
+  var player1NameInput = document.getElementById("player1Name");
+  player1NameInput.style.display = 'block';
+  player1NameInput.style.position = 'absolute';
+  player1NameInput.style.left = (width / 2 + 5) + 'px'; 
+  player1NameInput.style.top = (height / 2 - 10) + 'px'; 
+
+  var player2NameInput = document.getElementById("player2Name");
+  player2NameInput.style.display = 'block';
+  player2NameInput.style.position = 'absolute';
+  player2NameInput.style.left = (width / 2 + 5) + 'px'; 
+  player2NameInput.style.top = (height / 2 + 20) + 'px'; 
+
+  fill(4, 44, 220);
   textSize(30);
   text('Press 1 for Space Race', width / 3, height / 2 + 50);
 
-  fill(4, 44, 220);
+  fill(255, 255, 255);
   textAlign(CENTER);
   textSize(20);
   textFont(myFont);
@@ -208,6 +252,13 @@ function SpaceGame() {
 background(0);
 drawUi();
 
+  var player1NameInput = document.getElementById("player1Name");
+  player1NameInput.style.display = 'none';
+
+  var player2NameInput = document.getElementById("player2Name");
+  player2NameInput.style.display = 'none';
+
+  
 }
 
 function createAsteroid(type, x, y) {
@@ -231,13 +282,6 @@ function createAsteroid(type, x, y) {
   return asteroid;
 }
 
-function shipHit(ship, bulletGroup) {
-  for (var i = 0; i < bulletGroup.length; i++) {
-    if (bulletGroup[i].overlap(ship)) {
-      bulletGroup[i].remove();
-    }
-  }
-}
 
 function hitAsteroid(bullet, asteroid) {
   bullet.remove();
@@ -261,6 +305,15 @@ function hitAsteroid(bullet, asteroid) {
 function asteroidHit(asteroid, ship) {
   ship.position.x = width / 2;
   ship.position.y = height / 2;
+}
+
+function shipHit(ship, bulletGroup) {
+  for (var i = 0; i < bulletGroup.length; i++) {
+    if (bulletGroup[i].overlap(ship)) {
+      bulletGroup[i].remove();
+      ship.lives--;
+    }
+  }
 }
 
 function keyPressed() {
