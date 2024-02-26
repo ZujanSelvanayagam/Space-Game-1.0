@@ -13,6 +13,8 @@ var gameState = 0;
 var myFont;
 var myFont1;
 
+var music;
+
 function preload() {
   shipImage = loadImage('assets/asteroids_ship0001.png');
   bulletImage = loadImage('assets/asteroids_bullet.png');
@@ -20,6 +22,8 @@ function preload() {
 
   myFont = loadFont('fonts/BrokenMachine.ttf');
   myFont1 = loadFont('fonts/FutureNowRegular.ttf');
+
+  music = loadSound('fortnitecoral.mp3');
   
   for (var i = 0; i < 3; i++) {
     var asteroidImage = loadImage('assets/asteroid' + i + '.png');
@@ -30,6 +34,8 @@ function preload() {
 function setup() {
   createCanvas(1200, 725);
 
+  music.play();
+  
   ships = [];
   bullets = [];
 
