@@ -33,7 +33,7 @@ function preload() {
   myFont = loadFont('fonts/BrokenMachine.ttf');
   myFont1 = loadFont('fonts/FutureNowRegular.ttf');
 
-  // music = loadSound('fortnitecoral.mp3');
+  music = loadSound('fortnitecoral.mp3');
   
   for (var i = 0; i < 3; i++) {
     var asteroidImage = loadImage('assets/asteroid' + i + '.png');
@@ -44,7 +44,7 @@ function preload() {
 function setup() {
   createCanvas(1200, 725);
 
-  // music.play();
+  music.play();
 
 
   // Laad opgeslagen namen uit de localstorage als deze bestaan
