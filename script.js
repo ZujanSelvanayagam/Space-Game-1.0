@@ -12,6 +12,7 @@ var bulletImage;
 var bullets = [];
 var gameState = 0;
 var timer = 100;
+var transitionState = 0;
 
 
 let player1Name = "";
@@ -101,7 +102,9 @@ function draw() {
     menu();
   } else if (gameState == 1) {
     SpaceGame();
-  }
+  } else if (gameState == 3) {
+    showLivesTransition();
+  } 
 
 }
 
@@ -235,6 +238,7 @@ function drawUi() {
         currentShip.bulletFired = false;
       }
     }
+  
   drawSprites();
 
   fill(255, 255, 255);
@@ -307,14 +311,53 @@ function asteroidHit(asteroid, ship) {
   ship.position.y = height / 2;
 }
 
+var transitionTimer = 5;
+var lastFrameTime;
+
 function shipHit(ship, bulletGroup) {
   for (var i = 0; i < bulletGroup.length; i++) {
     if (bulletGroup[i].overlap(ship)) {
       bulletGroup[i].remove();
       ship.lives--;
+
+      if (ship.lives > 0) {
+        gameState = 3;
+        transitionTimer = 5; 
+      } 
     }
   }
 }
+
+
+function showLivesTransition() {
+  background(0);
+
+  var currentTime = millis(); 
+  var deltaTime = (currentTime - lastFrameTime) / 1000; 
+  lastFrameTime = currentTime; 
+
+  transitionTimer -= deltaTime; 
+
+ 
+  fill(255);
+  textSize(20);
+  textAlign(CENTER);
+  text(player1Name + ": " + ships[0].lives + " lives remaining", width/4, height/2);
+  text(player2Name + ": " + ships[1].lives + " lives remaining", width * 3/4, height/2);
+
+  if (transitionTimer <= 0) {
+    gameState = 1; 
+  }
+
+  if (ships[0].lives <= 0 || ships[1].lives <= 0) {
+    if (ships[0].lives <= 0) {
+      gameState = 3;
+    } else {
+      gameState = 3;
+    }
+  }
+}
+
 
 function keyPressed() {
   if (keyCode == 49) { // Toets 1
