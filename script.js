@@ -8,18 +8,17 @@ var bullets = [];
 var bulletImage;
 var particleImage;
 var asteroidImages = [];
-var bulletImage;
-var bullets = [];
 var gameState = 0;
 var timer = 100;
 var transitionState = 0;
 
+var player1Wins = false;
+var player2Wins = false;
 
 let player1Name = "";
 let player2Name = "";
 var typingPlayer1Name = false;
 var typingPlayer2Name = false;
-
 
 var myFont;
 var myFont1;
@@ -68,6 +67,7 @@ function setup() {
     localStorage.setItem('player2Name', player2Name);
   });
 
+  lastFrameTime = millis();
   
   ships = [];
   bullets = [];
@@ -102,11 +102,30 @@ function draw() {
     menu();
   } else if (gameState == 1) {
     SpaceGame();
+  } else if (gameState == 2) {
+    gameOver();
   } else if (gameState == 3) {
     showLivesTransition();
-  } 
+  } else if (gameState == 4) {
+    player1WinsState();
+  } else if (gameState == 5) {
+    player2WinsState();
+  }
 
-}
+    if (gameState !== 3) {
+      updateAsteroids();
+    }
+  }
+
+  function updateAsteroids() {
+    for (var i = 0; i < asteroids.length; i++) {
+      // Update de positie van de asteroïde alleen als de gameState niet gelijk is aan 3
+      if (gameState !== 3) {
+        asteroids[i].update();
+      }
+    }
+  }
+
 
 function menu() {
   background(0);
@@ -262,14 +281,16 @@ drawUi();
   var player2NameInput = document.getElementById("player2Name");
   player2NameInput.style.display = 'none';
 
-  
+  if (timer <= 0) {
+    gameState = 2;
+  } 
 }
 
 function createAsteroid(type, x, y) {
   var asteroid = createSprite(x, y);
   var image = asteroidImages[floor(random(0, 3))];
   asteroid.addImage(image);
-  asteroid.setSpeed(2.5 - type / 2, random(360));
+  asteroid.setSpeed(0.01 - type / 15, random(360));
   asteroid.rotationSpeed = 0.5;
   asteroid.type = type;
 
@@ -323,11 +344,16 @@ function shipHit(ship, bulletGroup) {
       if (ship.lives > 0) {
         gameState = 3;
         transitionTimer = 5; 
-      } 
+      } else {
+        if (ships.indexOf(ship) === 0) {
+          gameState = 5;  
+        } else {
+          gameState = 4;  
+      }
     }
   }
 }
-
+}
 
 function showLivesTransition() {
   background(0);
@@ -338,10 +364,10 @@ function showLivesTransition() {
 
   transitionTimer -= deltaTime; 
 
- 
-  fill(255);
-  textSize(20);
   textAlign(CENTER);
+  fill(255, 255, 255);
+  textSize(20);
+  textFont(myFont);
   text(player1Name + ": " + ships[0].lives + " lives remaining", width/4, height/2);
   text(player2Name + ": " + ships[1].lives + " lives remaining", width * 3/4, height/2);
 
@@ -351,6 +377,11 @@ function showLivesTransition() {
 
   if (ships[0].lives <= 0 || ships[1].lives <= 0) {
     if (ships[0].lives <= 0) {
+      gameState = 4; 
+    } else {
+      gameState = 5; 
+    }
+    if (ships[0].lives <= 0) {
       gameState = 3;
     } else {
       gameState = 3;
@@ -358,11 +389,90 @@ function showLivesTransition() {
   }
 }
 
+function player1WinsState() {
+  background(0);
+  textSize(50);
+  fill(4, 44, 220);
+  textAlign(CENTER);
+  textFont(myFont);
+  text(player1Name + ' Wins!', width / 2, height / 2 - 50);
+ 
+  fill(255, 255, 255);
+  textSize(35);
+  textAlign(CENTER);
+  textFont(myFont);
+  text('Press 1 to restart', width / 2, height / 2 + 50);
+}
+
+function player2WinsState() {
+  background(0);
+  textSize(50);
+  fill(4, 44, 220);
+  textAlign(CENTER);
+  textFont(myFont);
+  text(player2Name + ' Wins!', width / 2, height / 2 - 50);
+ 
+  fill(255, 255, 255);
+  textSize(35);
+  textAlign(CENTER);
+  textFont(myFont);
+  text('Press 1 to restart', width / 2, height / 2 + 50);
+}
 
 function keyPressed() {
   if (keyCode == 49) { // Toets 1
-    if (gameState == 0){
-    gameState = 1;
+    if (gameState == 0) {
+      restart();
+      gameState = 1;
+      timer = 100;
+    }else if (keyCode == 49 && gameState == 2 || gameState == 4 || gameState == 5){ 
+          gameState = 0; 
+        }
+      } 
     }
+
+function gameOver() {
+  background(0);
+  textSize(50);
+  textAlign(CENTER);
+  fill(4, 44, 220);
+  textFont(myFont);
+  text('Both Game Over', width / 2, height / 2 - 50);
+  
+  textSize(30);
+  fill(255, 255, 255);
+  textAlign(CENTER);
+  textFont(myFont);
+  text('Press 1 to restart', width / 2, height / 2 + 50);
+
+  fill(4, 44, 220);
+  textFont(myFont);
+  text('Made by Jimi, Zujan, Ruben, Ramses', width / 3, height - 20);
+}
+
+function restart() {
+  timer = 100;
+
+  for (var i = 0; i < ships.length; i++) {
+    ships[i].lives = 5;
+  }
+
+  for (var i = 0; i < ships.length; i++) {
+    ships[i].position.x = width / 2 + i * 50;
+    ships[i].position.y = height / 2;
+    ships[i].rotation = 0;
+  }
+
+  for (var i = 0; i < bullets.length; i++) {
+    bullets[i].removeSprites();
+  }
+
+  asteroids.removeSprites();
+
+  for (var i = 0; i < 8; i++) {
+    var angle = random(360);
+    var x = width / 2 + 1000 * cos(radians(angle));
+    var y = height / 2 + 1000 * sin(radians(angle));
+    createAsteroid(3, x, y);
   }
 }
