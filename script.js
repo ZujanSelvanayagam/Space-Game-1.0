@@ -47,25 +47,30 @@ function setup() {
   music.play();
 
 
-  // Laad opgeslagen namen uit de localstorage als deze bestaan
-  if (localStorage.getItem('player1Name')) {
-    player1Name = localStorage.getItem('player1Name');
-  }
-  if (localStorage.getItem('player2Name')) {
-    player2Name = localStorage.getItem('player2Name');
-  }
-
   document.getElementById("player1Name").addEventListener("input", function(event) {
-    player1Name = event.target.value;
-    // Sla de ingevoerde naam op in de localstorage
-    localStorage.setItem('player1Name', player1Name);
+      var input = event.target.value;
+      if (input.length <= 10) {
+          player1Name = input;
+          // Sla de ingevoerde naam op in de localstorage
+          localStorage.setItem('player1Name', player1Name);
+      } else {
+          // Als de ingevoerde naam langer is dan 10 tekens
+          event.target.value = input.substring(0, 10);
+      }
   });
 
   document.getElementById("player2Name").addEventListener("input", function(event) {
-    player2Name = event.target.value;
-    // Sla de ingevoerde naam op in de localstorage
-    localStorage.setItem('player2Name', player2Name);
+      var input = event.target.value;
+      if (input.length <= 10) {
+          player2Name = input;
+          // Sla de ingevoerde naam op in de localstorage
+          localStorage.setItem('player2Name', player2Name);
+      } else {
+          // Als de ingevoerde naam langer is dan 10 tekens
+          event.target.value = input.substring(0, 10);
+      }
   });
+
 
   lastFrameTime = millis();
   
@@ -119,7 +124,6 @@ function draw() {
 
   function updateAsteroids() {
     for (var i = 0; i < asteroids.length; i++) {
-      // Update de positie van de asteroïde alleen als de gameState niet gelijk is aan 3
       if (gameState !== 3) {
         asteroids[i].update();
       }
@@ -138,9 +142,9 @@ function menu() {
   textSize(35);
   textAlign(LEFT);
   textFont(myFont1);
-  text('Player 1 Name: ', width / 2, height / 2 - 50);
-  text('Player 2 Name: ', width / 2, height / 2);
 
+  text('Player 1 Name: ' + player1Name, width / 2, height / 2 - 50);
+  text('Player 2 Name: ' + player2Name, width / 2, height / 2);
 
   var player1NameInput = document.getElementById("player1Name");
   player1NameInput.style.display = 'block';
@@ -164,7 +168,9 @@ function menu() {
   textFont(myFont);
   text('CONTROLS: WASD + Spacebar', 1000, 550);
   text('CONTROLS: ArrowKeys + Enter', 1000, 580);
-  }
+
+  restart();
+}
 
 function drawUi() {
   for (var i = 0; i < allSprites.length; i++) {
@@ -328,8 +334,8 @@ function hitAsteroid(bullet, asteroid) {
 }
 
 function asteroidHit(asteroid, ship) {
-  ship.position.x = width / 2;
-  ship.position.y = height / 2;
+  ship.position.x = random(width);
+  ship.position.y = random(height);
 }
 
 var transitionTimer = 5;
@@ -427,6 +433,15 @@ function keyPressed() {
       timer = 100;
     }else if (keyCode == 49 && gameState == 2 || gameState == 4 || gameState == 5){ 
           gameState = 0; 
+
+      player1Name = "";
+      player2Name = "";
+      // Wis de namen ook uit de local storage
+      localStorage.removeItem('player1Name');
+      localStorage.removeItem('player2Name');
+      // Wis de inhoud van de invoervakjes
+      document.getElementById("player1Name").value = "";
+      document.getElementById("player2Name").value = "";
         }
       } 
     }
@@ -451,6 +466,8 @@ function gameOver() {
 }
 
 function restart() {
+  localStorage.clear();
+  
   timer = 100;
 
   for (var i = 0; i < ships.length; i++) {
