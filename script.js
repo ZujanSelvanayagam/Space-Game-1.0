@@ -33,7 +33,7 @@ function preload() {
   myFont = loadFont('fonts/BrokenMachine.ttf');
   myFont1 = loadFont('fonts/FutureNowRegular.ttf');
 
-  music = loadSound('fortnitecoral.mp3');
+  music = loadSound('SimpleMinds.mp3');
   
   for (var i = 0; i < 3; i++) {
     var asteroidImage = loadImage('assets/asteroid' + i + '.png');
@@ -166,8 +166,8 @@ function menu() {
   textAlign(CENTER);
   textSize(20);
   textFont(myFont);
-  text('CONTROLS: WASD + Spacebar', 1000, 550);
-  text('CONTROLS: ArrowKeys + Enter', 1000, 580);
+  text('PLAYER 1 CONTROLS: WASD + Spacebar', 1000, 550);
+  text('PLAYER 2 CONTROLS: ArrowKeys + Enter', 1000, 580);
 
   restart();
 }
