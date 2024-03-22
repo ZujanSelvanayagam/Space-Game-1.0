@@ -170,8 +170,8 @@ function menu() {
   textAlign(CENTER);
   textSize(20);
   textFont(myFont);
-  text('PLAYER 1 CONTROLS: WASD + Spacebar', 1000, 550);
-  text('PLAYER 2 CONTROLS: ArrowKeys + Enter', 1000, 580);
+  text('PLAYER 1 CONTROLS: WASD + Spacebar', 980, 550);
+  text('PLAYER 2 CONTROLS: ArrowKeys + Enter', 980, 580);
 
   restart();
 }
