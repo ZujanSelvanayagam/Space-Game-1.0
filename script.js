@@ -11,6 +11,8 @@ var asteroidImages = [];
 var gameState = 0;
 var timer = 100;
 var transitionState = 0;
+var randomX
+var randomY
 
 var player1Wins = false;
 var player2Wins = false;
@@ -78,7 +80,9 @@ function setup() {
   bullets = [];
 
   for (var i = 0; i < 2; i++) {
-    var newShip = createSprite(width / 2 + i * 50, height / 2);
+    var randomX = random(width);
+    var randomY = random(height);
+    var newShip = createSprite(randomX, randomY);
     newShip.debug = false;
     newShip.maxSpeed = 6;
     newShip.friction = 0.01;
@@ -475,8 +479,8 @@ function restart() {
   }
 
   for (var i = 0; i < ships.length; i++) {
-    ships[i].position.x = width / 2 + i * 50;
-    ships[i].position.y = height / 2;
+    ships[i].position.x = randomX;
+    ships[i].position.y = randomY;
     ships[i].rotation = 0;
   }
 
